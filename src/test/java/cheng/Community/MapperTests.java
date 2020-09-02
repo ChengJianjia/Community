@@ -1,9 +1,11 @@
 package cheng.Community;
 
 import cheng.Community.dataobject.DiscussPostMapper;
+import cheng.Community.dataobject.LoginTicketMapper;
 import cheng.Community.dataobject.TestData;
 import cheng.Community.dataobject.UserMapper;
 import cheng.Community.entity.DiscussPost;
+import cheng.Community.entity.LoginTicket;
 import cheng.Community.entity.User;
 import cheng.Community.service.TestService;
 import org.junit.jupiter.api.Test;
@@ -77,6 +79,32 @@ public class MapperTests {
 
         int rows = discussPostMapper.selectDiscussPostRows(149);
         System.out.println(rows);
+    }
+
+
+    //——————2.23 开发登录和退出功能—————
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
+
+    @Test
+    public void testInsertLoginTicket() {
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(102);
+        loginTicket.setTicket("aaaaaaa");
+        loginTicket.setStatus(0);
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 10)); //毫秒
+
+        loginTicketMapper.insertLoginTicket(loginTicket);
+    }
+
+    @Test
+    public void testSelectLoginTicket() {
+        LoginTicket loginTicket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginTicket);
+
+        loginTicketMapper.updateStatus("abc", 1);
+        loginTicket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginTicket);
     }
 
 }
